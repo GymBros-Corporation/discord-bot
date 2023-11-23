@@ -54,9 +54,15 @@ export const RANDOM_PIC_COMMAND = {
   ],
 } as const
 
+export const WEEKLY_REPORT_COMMAND = {
+  name: "weeklyreport",
+  description: "Generate a report for the past week",
+}
+
 export const commands = {
   ping: PING_COMMAND,
   invite: INVITE_COMMAND,
   pokemon: POKEMON_COMMAND,
   randompic: RANDOM_PIC_COMMAND,
+  weeklyreport: WEEKLY_REPORT_COMMAND,
 } as const

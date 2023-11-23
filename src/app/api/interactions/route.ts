@@ -1,3 +1,4 @@
+import { getWeeklyReport } from "@/app/utils/weeklyreport"
 import { commands, RandomPicType } from "@/commands"
 import { verifyInteractionRequest } from "@/discord/verify-incoming-request"
 import {
@@ -8,6 +9,7 @@ import {
   MessageFlags,
 } from "discord-api-types/v10"
 import { NextResponse } from "next/server"
+import { supabase } from "../../../supabaseClient"
 import { getRandomPic } from "./random-pic"
 
 /**
@@ -46,6 +48,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ type: InteractionResponseType.Pong })
   }
 
+  const { data, error } = await supabase.from("User").select("*")
+
+  if (!data) {
+    throw new Error("Error in query")
+  }
+
+  const randomUser = data[Math.floor(Math.random() * data.length)]
+
   if (interaction.type === InteractionType.ApplicationCommand) {
     const { name } = interaction.data
 
@@ -53,7 +63,7 @@ export async function POST(request: Request) {
       case commands.ping.name:
         return NextResponse.json({
           type: InteractionResponseType.ChannelMessageWithSource,
-          data: { content: `Pong` },
+          data: { content: `Random user username: ${randomUser.username}` },
         })
 
       case commands.invite.name:
@@ -150,6 +160,14 @@ export async function POST(request: Request) {
         return NextResponse.json({
           type: InteractionResponseType.ChannelMessageWithSource,
           data: { embeds: [embed] },
+        })
+
+      case commands.weeklyreport.name:
+        const responseContent = await getWeeklyReport()
+
+        return NextResponse.json({
+          type: InteractionResponseType.ChannelMessageWithSource,
+          data: { content: responseContent },
         })
 
       default:
