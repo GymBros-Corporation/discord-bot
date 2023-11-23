@@ -138,9 +138,7 @@ export async function getWeeklyReport(): Promise<string> {
 
   // New
   const newUsers = await getNewUsers(7)
-  console.log(newUsers)
   const newUsersWithoutFriends = await getNewUsersWithoutFriends(newUsers)
-  console.log(newUsersWithoutFriends)
   const newUsersWithoutFriendsPercentage = (newUsersWithoutFriends / newUsers.length) * 100
 
   let responseContent = ""
