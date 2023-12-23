@@ -1,3 +1,4 @@
+import axios from "axios"
 import { supabase } from "../../supabaseClient"
 
 function getDateDaysAgo(days: number) {
@@ -98,38 +99,41 @@ async function getNewUsers(numDaysAgo: number): Promise<{ id: string }[]> {
 }
 
 async function getNewUsersWithoutFriends(newUsers: { id: string }[]) {
-  let count = 0
-
-  // Check each user for accepted friends
-  for (const user of newUsers) {
-    const { data: friends, error: friendsError } = await supabase
+  const promises = newUsers.map((user) => {
+    return supabase
       .from("Friends")
       .select("*")
       .or(`userId.eq.${user.id},friendId.eq.${user.id}`)
       .eq("status", "ACCEPTED")
+      .then(({ data: friends }) => (friends?.length === 0 ? 1 : 0))
+  })
 
-    if (friendsError) {
-      console.error("Error fetching friends data: ", friendsError)
-      continue // Or handle the error as needed
-    }
-
-    if (friends.length === 0) {
-      count++
-    }
-  }
-
-  return count
+  const results = await Promise.all(promises)
+  return results.reduce((count: number, hasNoFriends: 0 | 1) => count + hasNoFriends, 0)
 }
 
 export async function getWeeklyReport(): Promise<string> {
   // Core
   const currentDate = new Date().toDateString()
+  console.time("1")
   const totalUsers = await getTotalUsersCount(new Date().toISOString())
+  console.timeEnd("1")
+  console.time("2")
   const weekGrowth = await calculateTotalUserGrowth(7)
+  console.timeEnd("2")
+  console.time("3")
   const activeUsersToday = await getActiveUsersCount(getDateDaysAgo(1), new Date().toISOString())
+  console.timeEnd("3")
+  console.time("4")
   const activeUsersWeek = await getActiveUsersCount(getDateDaysAgo(7), new Date().toISOString())
+  console.timeEnd("4")
+  console.time("5")
   const dayGrowth = await calculateUserGrowth(2, 1)
+  console.timeEnd("5")
+  console.time("6")
   const weekActiveGrowth = await calculateUserGrowth(14, 7)
+  console.timeEnd("6")
+  console.time("7")
 
   // Premium
   const totalPremiumUsers = 0
@@ -138,7 +142,11 @@ export async function getWeeklyReport(): Promise<string> {
 
   // New
   const newUsers = await getNewUsers(7)
+  console.timeEnd("7")
+  console.time("8")
   const newUsersWithoutFriends = await getNewUsersWithoutFriends(newUsers)
+  console.timeEnd("8")
+  console.time("9")
   const newUsersWithoutFriendsPercentage = (newUsersWithoutFriends / newUsers.length) * 100
 
   let responseContent = ""
@@ -171,6 +179,12 @@ export async function getWeeklyReport(): Promise<string> {
     2
   )}% of New Users)\n`
   responseContent += line
+  console.timeEnd("9")
 
   return responseContent
+}
+
+export async function sendWeeklyReport() {
+  // CHANGE TO PROD later
+  axios.post("https://app-website-git-dev-gymbrocorp.vercel.app/api/trpc/analytics.sendMetricsToDiscord")
 }

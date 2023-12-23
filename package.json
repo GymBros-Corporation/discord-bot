@@ -12,6 +12,7 @@
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/supabase-js": "^2.38.5",
     "autoprefixer": "^10.4.16",
+    "axios": "^1.6.2",
     "discord-api-types": "^0.37.54",
     "dotenv": "^16.3.1",
     "ky": "^0.33.3",
