@@ -1,4 +1,4 @@
-import { sendWeeklyReport } from "@/app/utils/weeklyreport"
+import { getWeeklyReport, sendWeeklyReport } from "@/app/utils/weeklyreport"
 import { commands, RandomPicType } from "@/commands"
 import { verifyInteractionRequest } from "@/discord/verify-incoming-request"
 import {
@@ -163,11 +163,11 @@ export async function POST(request: Request) {
         })
 
       case commands.weeklyreport.name:
-        sendWeeklyReport()
+        const responseContent = await getWeeklyReport()
 
         return NextResponse.json({
           type: InteractionResponseType.ChannelMessageWithSource,
-          data: { content: "Generating metrics..." },
+          data: { content: responseContent },
         })
 
       default:

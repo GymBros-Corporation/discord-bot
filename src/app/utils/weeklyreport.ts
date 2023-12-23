@@ -144,10 +144,10 @@ export async function getWeeklyReport(): Promise<string> {
   const newUsers = await getNewUsers(7)
   console.timeEnd("7")
   console.time("8")
-  const newUsersWithoutFriends = await getNewUsersWithoutFriends(newUsers)
+  // const newUsersWithoutFriends = await getNewUsersWithoutFriends(newUsers)
   console.timeEnd("8")
   console.time("9")
-  const newUsersWithoutFriendsPercentage = (newUsersWithoutFriends / newUsers.length) * 100
+  // const newUsersWithoutFriendsPercentage = (newUsersWithoutFriends / newUsers.length) * 100
 
   let responseContent = ""
   const separator = " | "
@@ -175,9 +175,9 @@ export async function getWeeklyReport(): Promise<string> {
   responseContent += line
   responseContent += "**New User Metrics (past week)**\n"
   responseContent += `New Users                                        ${separator}${newUsers.length.toLocaleString()}\n`
-  responseContent += `New Users without Friends        ${separator}${newUsersWithoutFriends.toLocaleString()} (${newUsersWithoutFriendsPercentage.toFixed(
+  // responseContent += `New Users without Friends        ${separator}${newUsersWithoutFriends.toLocaleString()} (${newUsersWithoutFriendsPercentage.toFixed(
     2
-  )}% of New Users)\n`
+  // )}% of New Users)\n`
   responseContent += line
   console.timeEnd("9")
 
