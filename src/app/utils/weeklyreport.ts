@@ -179,7 +179,7 @@ export async function getWeeklyReport(): Promise<string> {
   //   2
   // )}% of New Users)\n`
 
-  responseContent += `New Users without Friends        ${separator}Under Maintenance 🚧`
+  responseContent += `New Users without Friends        ${separator}Under Maintenance 🚧\n`
   responseContent += line
   console.timeEnd("9")
 
