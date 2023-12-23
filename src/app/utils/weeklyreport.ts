@@ -176,8 +176,10 @@ export async function getWeeklyReport(): Promise<string> {
   responseContent += "**New User Metrics (past week)**\n"
   responseContent += `New Users                                        ${separator}${newUsers.length.toLocaleString()}\n`
   // responseContent += `New Users without Friends        ${separator}${newUsersWithoutFriends.toLocaleString()} (${newUsersWithoutFriendsPercentage.toFixed(
-    2
+  //   2
   // )}% of New Users)\n`
+
+  responseContent += `New Users without Friends        ${separator}Under Maintenance 🚧`
   responseContent += line
   console.timeEnd("9")
 
