@@ -83,6 +83,18 @@ async function calculateTotalUserGrowth(numDaysAgo: number) {
   return growth
 }
 
+async function getNewUserCount(numDaysAgo: number): Promise<number> {
+  const fromDate = getDateDaysAgo(numDaysAgo)
+  const { error, count } = await supabase.from("User").select("id", { count: "exact" }).gte("accountCreation", fromDate)
+
+  if (error || count === null) {
+    console.error("Error fetching new users: ", error)
+    return 0
+  }
+
+  return count
+}
+
 async function getNewUsers(numDaysAgo: number): Promise<{ id: string }[]> {
   const fromDate = getDateDaysAgo(numDaysAgo)
   const { data, error, count } = await supabase
@@ -141,7 +153,8 @@ export async function getWeeklyReport(): Promise<string> {
   const premiumPenetration = (totalPremiumUsers / activeUsersWeek) * 100
 
   // New
-  const newUsers = await getNewUsers(7)
+  // const newUsers = await getNewUsers(7)
+  const newUserCount = await getNewUserCount(7)
   console.timeEnd("7")
   console.time("8")
   // const newUsersWithoutFriends = await getNewUsersWithoutFriends(newUsers)
@@ -174,7 +187,8 @@ export async function getWeeklyReport(): Promise<string> {
   responseContent += `Premium User Penetration         ${separator}${premiumPenetration.toFixed(2)}%\n`
   responseContent += line
   responseContent += "**New User Metrics (past week)**\n"
-  responseContent += `New Users                                        ${separator}${newUsers.length.toLocaleString()}\n`
+  responseContent += `New Users                                        ${separator}${newUserCount.toLocaleString()}\n`
+  // responseContent += `New Users                                        ${separator}${newUsers.length.toLocaleString()}\n`
   // responseContent += `New Users without Friends        ${separator}${newUsersWithoutFriends.toLocaleString()} (${newUsersWithoutFriendsPercentage.toFixed(
   //   2
   // )}% of New Users)\n`
