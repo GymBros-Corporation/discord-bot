@@ -1,7 +1,6 @@
 import { getWeeklyReport, sendWeeklyReport } from "@/app/utils/weeklyreport"
 import { commands, RandomPicType } from "@/commands"
 import { verifyInteractionRequest } from "@/discord/verify-incoming-request"
-import axios from "axios"
 import {
   APIInteractionDataOptionBase,
   ApplicationCommandOptionType,

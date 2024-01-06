@@ -1,4 +1,3 @@
-import axios from "axios"
 import { supabase } from "../../supabaseClient"
 
 function getDateDaysAgo(days: number) {
@@ -198,9 +197,4 @@ export async function getWeeklyReport(): Promise<string> {
   console.timeEnd("9")
 
   return responseContent
-}
-
-export async function sendWeeklyReport() {
-  // CHANGE TO PROD later
-  axios.post("https://app-website-git-dev-gymbrocorp.vercel.app/api/trpc/analytics.sendMetricsToDiscord")
 }
