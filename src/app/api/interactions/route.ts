@@ -1,6 +1,7 @@
 import { getWeeklyReport, sendWeeklyReport } from "@/app/utils/weeklyreport"
 import { commands, RandomPicType } from "@/commands"
 import { verifyInteractionRequest } from "@/discord/verify-incoming-request"
+import axios from "axios"
 import {
   APIInteractionDataOptionBase,
   ApplicationCommandOptionType,
@@ -163,11 +164,11 @@ export async function POST(request: Request) {
         })
 
       case commands.weeklyreport.name:
-        const responseContent = await getWeeklyReport()
+        axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyrepor")
 
         return NextResponse.json({
           type: InteractionResponseType.ChannelMessageWithSource,
-          data: { content: responseContent },
+          data: { content: "Generating report..." },
         })
 
       default:
