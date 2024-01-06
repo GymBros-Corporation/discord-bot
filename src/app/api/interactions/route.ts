@@ -1,4 +1,4 @@
-import { getWeeklyReport, sendWeeklyReport } from "@/app/utils/weeklyreport"
+import { getWeeklyReport } from "@/app/utils/weeklyreport"
 import { commands, RandomPicType } from "@/commands"
 import { verifyInteractionRequest } from "@/discord/verify-incoming-request"
 import {
