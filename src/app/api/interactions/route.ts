@@ -164,7 +164,7 @@ export async function POST(request: Request) {
         })
 
       case commands.weeklyreport.name:
-        axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyreport")
+        await axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyreport")
         const responseContent = "Generating metrics, please wait..."
 
         return NextResponse.json({
