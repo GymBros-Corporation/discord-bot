@@ -164,13 +164,12 @@ export async function POST(request: Request) {
         })
 
       case commands.weeklyreport.name:
-        axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyreport")
-
-        return NextResponse.json({
+        NextResponse.json({
           type: InteractionResponseType.ChannelMessageWithSource,
           data: { content: "Generating report..." },
         })
 
+        axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyreport")
       default:
       // Pass through, return error at end of function
     }
