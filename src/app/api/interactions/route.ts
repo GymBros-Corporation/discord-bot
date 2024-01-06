@@ -164,11 +164,13 @@ export async function POST(request: Request) {
         })
 
       case commands.weeklyreport.name:
-        axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyreport")
+        // axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyreport")
+        const responseContent = await getWeeklyReport()
+        // const responseContent = "Generating report...";
 
         return NextResponse.json({
           type: InteractionResponseType.ChannelMessageWithSource,
-          data: { content: "Generating report..." },
+          data: { content: responseContent },
         })
 
       default:
