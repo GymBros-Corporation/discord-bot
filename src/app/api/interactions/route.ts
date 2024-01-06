@@ -164,9 +164,8 @@ export async function POST(request: Request) {
         })
 
       case commands.weeklyreport.name:
-        // axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyreport")
-        const responseContent = await getWeeklyReport()
-        // const responseContent = "Generating report...";
+        axios.post("https://discord-server-muddy-mountain-5164.fly.dev/weeklyreport")
+        const responseContent = "Generating metrics, please wait..."
 
         return NextResponse.json({
           type: InteractionResponseType.ChannelMessageWithSource,
